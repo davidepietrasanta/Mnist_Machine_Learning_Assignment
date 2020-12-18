@@ -8,3 +8,7 @@ It's all settle! To run this script you just need to
 python Create_images.py
 ```
 and the job is done.
+
+Here some output example:
+
+![numero5](https://github.com/davidepietrasanta/Mnist_Machine_Learning_Assignment/blob/main/MNIST%20Dataset/1.png)  ![numero0](https://github.com/davidepietrasanta/Mnist_Machine_Learning_Assignment/blob/main/MNIST%20Dataset/2.png) ![numero4](https://github.com/davidepietrasanta/Mnist_Machine_Learning_Assignment/blob/main/MNIST%20Dataset/3.png)
