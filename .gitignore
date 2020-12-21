@@ -1,3 +1,5 @@
 Images/Testset/
 Images/Trainset/
 CSV/*.csv
+.Rhistory
+
