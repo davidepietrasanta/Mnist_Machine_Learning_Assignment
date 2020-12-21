@@ -12,8 +12,23 @@ mnist_train[is.na(mnist_train)] <- 0
 mnist_test[is.na(mnist_test)] <- 0
 
 # Check distribution of every number
-table(mnist_train$Number) / nrow(mnist_train) * 100 # uniform distribution
-table(mnist_test$Number) / nrow(mnist_test) * 100 # uniform distribution
+table_train = table(mnist_train$Number) / nrow(mnist_train) * 100 # uniform distribution
+table_test = table(mnist_test$Number) / nrow(mnist_test) * 100 # uniform distribution
+
+plot(table_train)
+chisq_uniform_train = chisq.test(table_train)
+chisq_uniform_train$expected
+chisq_uniform_train$p.value
+# We can conclude that the observed proportions are not significantly different
+# from an uniform distribution, with a p-value of 0.9999972.
+
+plot(table_test)
+chisq_uniform_test = chisq.test(table_test)
+chisq_uniform_test$expected
+chisq_uniform_test$p.value
+# We can conclude that the observed proportions are not significantly different
+# from an uniform distribution, with a p-value of 0.9999935.
+
 
 # Making target class as a factor 
 mnist_train$Number <- factor(mnist_train$Number)
