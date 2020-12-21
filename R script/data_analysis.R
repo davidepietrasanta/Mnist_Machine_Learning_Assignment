@@ -1,5 +1,4 @@
 # Data Analysis
-setwd("Mnist_Machine_Learning_Assignment")
 
 # Load datasets
 mnist_train <- read.csv("CSV/mnist_train.csv") 
