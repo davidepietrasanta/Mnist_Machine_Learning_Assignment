@@ -31,15 +31,13 @@ from os import listdir
 from os.path import isfile, join
 import pathlib
 mypath = pathlib.Path(__file__).absolute().parents[1]
-print(mypath)
-
-"""
-#mypath = "E:\Program\R\Progetto ML\\"
-onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
-print(onlyfiles)
-"""
+print("Actual path: " + str(mypath))
 
 convert(mypath / "MNIST Dataset" / "train-images-idx3-ubyte.gz", mypath / "MNIST Dataset" / "train-labels-idx1-ubyte.gz",
 mypath / "CSV" / "mnist_train.csv", 60000)
+print("Trainset converted")
 convert(mypath / "MNIST Dataset" / "t10k-images-idx3-ubyte.gz", mypath / "MNIST Dataset" / "t10k-labels-idx1-ubyte.gz",
 mypath / "CSV" / "mnist_test.csv", 10000)
+print("Testset converted")
+
+print("End")
