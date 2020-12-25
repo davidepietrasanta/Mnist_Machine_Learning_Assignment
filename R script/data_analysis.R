@@ -1,8 +1,8 @@
 # Data Analysis
 
 # Load datasets
-mnist_train <- read.csv("CSV/mnist_train.csv") 
-mnist_test <- read.csv("CSV/mnist_test.csv")
+mnist_train <- read.csv("CSV/mnist_train.csv", header = FALSE) 
+mnist_test <- read.csv("CSV/mnist_test.csv", header = FALSE)
 
 colnames(mnist_test)[1] <- "Number"
 colnames(mnist_train)[1] <- "Number"
