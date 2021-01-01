@@ -4,13 +4,6 @@
 train <- read.csv("CSV/mnist_train_pca.csv")
 test <- read.csv("CSV/mnist_test_pca.csv")
 
-# ReLU custom activation function
-# reLU <- function(x) if(x <= 0) 0 else x  # unable to use it
-# Approsimation of ReLU function
-# softplus <- function(x) log(1 + exp(x))
-
-train$label = factor(train$label)
-
 train$n0 = train$label == 0
 train$n1 = train$label == 1
 train$n2 = train$label == 2
@@ -22,39 +15,37 @@ train$n7 = train$label == 7
 train$n8 = train$label == 8
 train$n9 = train$label == 9
 
+# Scale data
+scl <- function(x){ (x - min(x))/(max(x) - min(x)) }
+train[, 2:21] <- data.frame(lapply(train[, 2 : 21], scl))
+head(train)
+
 # Picking up every names of the co
 names <- names(train[2 : 21])
 nums <- c("n0", "n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9")
 formula <- as.formula(paste(paste(nums, collapse = "+"), " ~ ", paste(names, collapse = "+")))
-# formula <- as.formula(paste("label", " ~ ", paste(names, collapse = "+")))
-
-# train <- scale(train)
 
 start_time <- Sys.time()
 set.seed(4)
 
 library(neuralnet)
 
-# Create a NN classifier
-# nn <- neuralnet(label ~ .,
-#                 data = train,
-#                 hidden = 10,
-#                 #algorithm = "backprop",
-#                 stepmax = 1e3,
-#                 act.fct = "logistic",
-#                 learningrate = 0.1
-#                 )
+# Create a NN classifier ?? takes too much time and it didn't converge
 nn <- neuralnet(formula,
-                data = train,
-                hidden = 10,
+                train,
+                hidden = 12,
                 #algorithm = "backprop",
-                stepmax = 1e5,
+                stepmax = 1e6,
                 act.fct = "logistic",
-                learningrate = 0.1
-)
+                learningrate = 0.1,
+                linear.output = FALSE
+                )
 
 # Plot NN
 plot(nn)
 
 end_time <- Sys.time()
 exec_time <- end_time - start_time
+
+# Save workspace data
+save.image(file = "my_work_space_Neural_Network.RData")
