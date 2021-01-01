@@ -28,8 +28,13 @@ model_evaluation <- function(predictions, labels){
   return(val)
 }
 
-#For Naive Bayes
-mod_eva <- model_evaluation(pred, test$label)
-mod_eva
+test_function <- function(pred, test){
+  x <- data.frame("label_true" = test$label, "label_pred_1" = pred, "label_pred_2" = pred) #I need both the classifier
+  x
+  res_multi_roc <- multi_roc(x, force_diag=T)
+  res_multi_roc
+  
+}
+
 
 
