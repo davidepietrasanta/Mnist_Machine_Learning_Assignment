@@ -21,9 +21,13 @@ nb_pred <- naive_bayes(train, test)
 end_time_nb <- Sys.time() 
 time_nb <- end_time_nb - start_time_nb #Time Naive Bayes
 
-# Neural Network
+# Neural Network using neuralnet // TODO
+# source("R scritp/NN.R")
+# nn <- neural_network1(train, test)
+
+# Neural Network using caret
 source("R script/NN2.R")
-#nn <- neural_network(train, test)
+nn2 <- neural_network2(train, test)
 
 # Model Evaluation
 source("R script/Model Evaluation.R")
