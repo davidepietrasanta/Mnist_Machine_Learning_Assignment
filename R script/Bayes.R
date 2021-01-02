@@ -12,9 +12,10 @@ naive_bayes <- function(train, test){
   library(caret)
   
   # Define training control
-  train_control_nb <- trainControl(method = "cv", number = 10)
+  train_control_nb <- trainControl(method="cv", number=10)
   # Train the model
-  model_nb <- train(label ~., data = train, trControl = train_control_nb, method = "nb")
+  #options(warn=1) 
+  model_nb <- train(label~., data=train, trControl=train_control_nb, method="nb")
   cv_nb_accuracy <- model_nb$resample['Accuracy']$Accuracy #For the 10-fold cross validation
   model_accuracy_nb <- mean(cv_nb_accuracy)
   model_accuracy_nb
