@@ -3,7 +3,8 @@
 #load("my_work_space_Naive_Bayes.RData")
 
 # Precision, recall, f-measure, ROC e AUC
-model_evaluation <- function(predictions, labels, model_name){
+model_evaluation <- function(predictions, labels, model_name)
+{
   library(caret)
   
   # Confusion Matrix
@@ -20,6 +21,7 @@ model_evaluation <- function(predictions, labels, model_name){
                         target_col = "Target",
                         counts_col = "Freq",
                         add_normalized = FALSE
+
                         ) + ggtitle(paste("Confusion Matrix", model_name))
   
   # Precision, recall, f-measure
