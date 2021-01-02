@@ -12,9 +12,9 @@ naive_bayes <- function(train, test){
   library(caret)
   
   # Define training control
-  train_control_nb <- trainControl(method="cv", number=10)
+  train_control_nb <- trainControl(method = "cv", number = 10)
   # Train the model
-  model_nb <- train(label~., data=train, trControl=train_control_nb, method="nb")
+  model_nb <- train(label ~., data = train, trControl = train_control_nb, method = "nb")
   cv_nb_accuracy <- model_nb$resample['Accuracy']$Accuracy #For the 10-fold cross validation
   model_accuracy_nb <- mean(cv_nb_accuracy)
   model_accuracy_nb
@@ -29,7 +29,6 @@ naive_bayes <- function(train, test){
   #Save
   save.image(file = "my_work_space_Naive_Bayes.RData")
   #load("my_work_space_Naive_Bayes.RData") # To restore the data in any time
-  
   
   return(pred_nb)
 }
