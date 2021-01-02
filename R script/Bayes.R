@@ -6,9 +6,7 @@ naive_bayes <- function(train, test){
   train$label = factor(train$label)
   test$label = factor(test$label)
   
-  #install.packages("e1071)
   library(e1071)
-  #install.packages("caret")
   library(caret)
   
   # Define training control
@@ -19,7 +17,6 @@ naive_bayes <- function(train, test){
   cv_nb_accuracy <- model_nb$resample['Accuracy']$Accuracy #For the 10-fold cross validation
   model_accuracy_nb <- mean(cv_nb_accuracy)
   model_accuracy_nb
-  
   
   #Test on Validation test
   pred_nb <- predict(model_nb, test)

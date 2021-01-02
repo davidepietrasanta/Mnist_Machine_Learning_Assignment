@@ -27,7 +27,6 @@ neural_network1 <- function(train, test)
   start_time <- Sys.time()
   set.seed(123)
   
-  # install.packages("neuralnet")
   library(neuralnet)
   
   # Create a NN classifier ?? takes too much time and it didn't converge

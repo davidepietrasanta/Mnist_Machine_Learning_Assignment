@@ -3,13 +3,24 @@
 #load("my_work_space_Naive_Bayes.RData")
 
 # Precision, recall, f-measure, ROC e AUC
-model_evaluation <- function(predictions, labels){
-  #install.packages("caret")
+model_evaluation <- function(predictions, labels, model){
   library(caret)
   
   # Confusion Matrix
   pred_Matrix <- table(predictions, labels)
   confusion_Matrix <- confusionMatrix(pred_Matrix)
+  confusion_Matrix
+  
+  # Plot Confusion Matrix
+  data_conf_Matrix <- data.frame(confusion_Matrix$table)
+  colnames(data_conf_Matrix)[1] <- "Prediction"
+  colnames(data_conf_Matrix)[2] <- "Target"
+  plot <- plot_confusion_matrix(data_conf_Matrix,
+                        prediction_col = "Prediction",
+                        target_col = "Target",
+                        counts_col = "Freq",
+                        add_normalized = FALSE
+                        )
   
   # Precision, recall, f-measure
   precision <- mean(confusion_Matrix$byClass[,5]) #["Precision"]
@@ -17,13 +28,12 @@ model_evaluation <- function(predictions, labels){
   f_measure <- mean(confusion_Matrix$byClass[,7]) #["F1"]
   
   val <- c(precision, recall, f_measure)
-  return(val)
+  return(list(val, plot))
 }
 
 
 # AUC and ROC Plots
-multi_roc_function <- function(pred, test){
-  #install.packages("pROC")
+multi_roc_function <- function(pred, test, model_name){
   library(pROC)
   
   pred.roc <- as.numeric(as.character(pred))
@@ -34,7 +44,8 @@ multi_roc_function <- function(pred, test){
                    "4"=rs_test[[5]],"5"=rs_test[[6]],
                    "6"=rs_test[[7]],"7"=rs_test[[8]],
                    "8"=rs_test[[9]],"9"=rs_test[[10]])
-  plot <- ggroc(roc.list, legacy.axes = TRUE) + geom_abline() + ggtitle("ROC curve") + geom_line(size=1)
+
+  plot <- ggroc(roc.list, legacy.axes = TRUE) + geom_abline() + ggtitle(paste("ROC curve", model_name)) + geom_line(size = 1)
   
   auc <- as.numeric(roc.multi_test$auc)
   auc

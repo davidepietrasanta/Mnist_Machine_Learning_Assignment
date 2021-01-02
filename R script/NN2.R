@@ -4,10 +4,8 @@ neural_network2 <- function(train, test)
 {
   train_label <- as.factor(train$label)
   summary(train_label)
-  
-  # install.packages(caret)
+
   library(caret)
-  # install.packages("doParallel")
   library(doParallel)
   
   cores <- detectCores()
@@ -51,5 +49,5 @@ neural_network2 <- function(train, test)
   # Save workspace data
   save.image(file = "my_work_space_Neural_Network_Caret.RData")
   
-  return(c(nn, pred, test$label))
+  return(pred)
 }
