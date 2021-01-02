@@ -10,4 +10,6 @@ We think that, since the images are centered and relatively simple we can say th
 
 Thinking in that way we think Naive Bayes model can work well, known that they are not the optimal choice.
 
-## Unkwnow
+## Neural Network
+The second one is a 'Neural Network' model.
+

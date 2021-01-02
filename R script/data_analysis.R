@@ -30,6 +30,8 @@ data_analysis <- function(){
         # We can conclude that the observed proportions are not significantly different
         # from an uniform distribution, with a p-value of 0.9999935.
         
+        # Correlation matrix from train set
+        corr <- round(cor(mnist_train), 1)
         
         # Making target class as a factor 
         mnist_train$Number <- factor(mnist_train$Number)
@@ -59,7 +61,7 @@ data_analysis <- function(){
         plot(variance_explained$Number_of_Principal_Components,
              variance_explained$Cumulative_Variance_Explained, 
              xlim = c(0 , 150),
-             xlab = "Principal Componets",
+             xlab = "Principal Components",
              ylab = "Cumulative Variance Explained",
              main = 'Principal Components vs Cumulative Variance Explained'
         )
