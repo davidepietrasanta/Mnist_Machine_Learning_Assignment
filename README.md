@@ -6,9 +6,9 @@ We want to implement two of the Machine Learning models saw in class.
 ## Naive Bayes
 The first one is the `Naive Bayes` model. 
 
-We think that, since the images are centered and relatively simple we can say that, for example, if the center is not black the probability that the digit is a 0 (zero) is low.
+We think that, since the images are centered and relatively simple we can say that, for example, if the center is not black the probability that the digit is a 0 (zero) should be low. Following the same logic, if the center is white the probability that that the digit is a 1 (one) should be higher than the probability that the digit is a 0 (zero).
 
-Thinking in that way we think Naive Bayes model can work well, known that they are not the optimal choice.
+Thinking in that way we think Naive Bayes model could work well, known that is not the optimal choice.
 
 ## Neural Network
 The second one is a 'Neural Network' model.
