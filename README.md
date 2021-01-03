@@ -11,5 +11,6 @@ We think that, since the images are centered and relatively simple we can say th
 Thinking in that way we think Naive Bayes model could work well, known that is not the optimal choice.
 
 ## Neural Network
-The second one is a 'Neural Network' model.
+The second one is a `Neural Network` model.
 
+We choose this model becuase of the flexibility with different kind of problem and also their reliability with tasks involving a very large number of features. 
