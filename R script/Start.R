@@ -18,9 +18,12 @@ check_packages(c("ggplot2",
                  "cvms",
                  "pROC",
                  "e1071",
-                 #"neuralner",
-                 "doParallel"
-                 ))
+                 #"neuralnet",
+                 "doParallel",
+                 "NeuralNetTools",
+                 "factoextra",
+                 "plot.matrix"
+))
 
 # Set working directory
 current_path <- dirname(dirname(rstudioapi::getSourceEditorContext()$path))
@@ -32,14 +35,15 @@ data_analysis()
 
 # Dataset
 train <- read.csv("CSV/mnist_train_pca.csv")
-test <- read.csv("CSV/mnist_test_pca.csv")
+test <-  read.csv("CSV/mnist_test_pca.csv")
 
 # Naive Bayes
 source("R script/Bayes.R")
 start_time_nb <- Sys.time() 
 nb_pred <- naive_bayes(train, test) 
 end_time_nb <- Sys.time() 
-time_nb <- end_time_nb - start_time_nb #Time Naive Bayes
+time_nb <-  end_time_nb - start_time_nb #Time Naive Bayes
+time_nb
 
 # Neural Network using neuralnet // TODO
 # source("R scritp/NN.R")
@@ -50,7 +54,8 @@ source("R script/NN2.R")
 start_time_nn2 <- Sys.time()
 nn2_pred <- neural_network2(train, test)
 end_time_nn2 <- Sys.time()
-time_nn2 <- start_time_nn2 - end_time_nn2
+time_nn2 <-  end_time_nn2 - start_time_nn2 #Time NN
+time_nn2
 
 # Model Evaluation
 source("R script/Model Evaluation.R")

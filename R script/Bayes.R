@@ -16,13 +16,13 @@ naive_bayes <- function(train, test){
   model_nb <- train(label~., data=train, trControl=train_control_nb, method="nb")
   cv_nb_accuracy <- model_nb$resample['Accuracy']$Accuracy #For the 10-fold cross validation
   model_accuracy_nb <- mean(cv_nb_accuracy)
-  model_accuracy_nb
+  print(model_accuracy_nb)
   
   #Test on Validation test
   pred_nb <- predict(model_nb, test)
   predMatrix_nb <- table(pred_nb, test$label)
-  predMatrix_nb
-  confusionMatrix(predMatrix_nb)$overall['Accuracy']
+  print(predMatrix_nb)
+  print(confusionMatrix(predMatrix_nb)$overall['Accuracy'])
   
   #Save
   save.image(file = "my_work_space_Naive_Bayes.RData")

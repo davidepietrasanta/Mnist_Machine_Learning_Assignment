@@ -14,11 +14,6 @@ neural_network1 <- function(train, test)
   train$n8 = train$label == 8
   train$n9 = train$label == 9
   
-  # Scale data
-  scl <- function(x){ (x - min(x))/(max(x) - min(x)) }
-  train[, 2:21] <- data.frame(lapply(train[, 2 : 21], scl))
-  head(train)
-  
   # Setting the formula for neuralnet function
   names <- names(train[2 : 21])
   nums <- c("n0", "n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9")
@@ -36,9 +31,10 @@ neural_network1 <- function(train, test)
                   #algorithm = "backprop",
                   stepmax = 1e6,
                   act.fct = "logistic",
-                  learningrate = 0.1,
+                  learningrate = 0.01,
+                  threshold = 0.2,
                   linear.output = FALSE
-                  )
+  )
   
   # Plot NN
   plot(nn)

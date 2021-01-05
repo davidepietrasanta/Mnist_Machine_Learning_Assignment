@@ -18,18 +18,30 @@ neural_network2 <- function(train, test)
                    )
   
   set.seed(123)
-  
   # Train classification model using nnet method
   # Single hidden layer with 11 nodes (can be tuned)
+  # nn <- train(train,
+  #              train_label,
+  #              method = "nnet",
+  #              linear.output = FALSE,
+  #              tuneGrid = expand.grid(size = 11,
+  #                                     decay = 0),
+  #              trControl = cv,
+  #              verbose = FALSE,
+  #             )
   nn <- train(train,
-               train_label,
-               method = "nnet",
-               linear.output = FALSE,
-               tuneGrid = expand.grid(size = 11,
-                                      decay = 0),
-               trControl = cv,
-               verbose = FALSE,
+              train_label,
+              method = "mlpML",
+              tuneGrid = expand.grid(layer1 = 11,
+                                     layer2 = 0,
+                                     layer3 = 0),
+              type = "Classification",
+              trControl = cv,
+              verbose = FALSE,
               )
+  
+  library(NeuralNetTools)
+  plotnet(nn$finalModel)
   
   # Stop using parallel computing
   stopCluster(cluster)
@@ -37,14 +49,13 @@ neural_network2 <- function(train, test)
   # Measure the accuracy of the model
   cv_nn_accuracy <- nn$resample['Accuracy']$Accuracy #For the 10-fold cross validation
   nn_accuracy <- mean(cv_nn_accuracy)
-  nn_accuracy # ~75% not that bad using 20PCs and a single layer NN
+  print(nn_accuracy) # ~75% not that bad using 20PCs and a single layer NN
   
   # Predict using model
   pred <- predict(nn, test)
   predMatrix <- table(pred, test$label)
-  predMatrix
-  
-  confMatrix <- confusionMatrix(predMatrix)$overall['Accuracy']
+  print(predMatrix)
+  print(confusionMatrix(predMatrix)$overall['Accuracy'])
   
   # Save workspace data
   save.image(file = "my_work_space_Neural_Network_Caret.RData")
