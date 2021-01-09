@@ -1,50 +1,57 @@
-# Neural net model 
+# Neural net model using caret
 
-neural_network1 <- function(train, test)
+neural_network <- function(train, test)
 {
-  # Add 0-9 cols based on the digits on the dataset
-  train$n0 = train$label == 0
-  train$n1 = train$label == 1
-  train$n2 = train$label == 2
-  train$n3 = train$label == 3
-  train$n4 = train$label == 4
-  train$n5 = train$label == 5
-  train$n6 = train$label == 6
-  train$n7 = train$label == 7
-  train$n8 = train$label == 8
-  train$n9 = train$label == 9
+  train_label <- as.factor(train$label)
+  summary(train_label)
+
+  library(caret)
+  library(doParallel)
   
-  # Setting the formula for neuralnet function
-  names <- names(train[2 : 21])
-  nums <- c("n0", "n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9")
-  formula <- as.formula(paste(paste(nums, collapse = "+"), " ~ ", paste(names, collapse = "+")))
+  cores <- detectCores()
+  registerDoParallel(cores = cores)
+  cluster <- makeCluster(cores)
   
-  start_time <- Sys.time()
+  # Set up 10-cross validation
+  cv <- trainControl(method = "cv",
+                   number = 10
+                   )
+  
   set.seed(123)
+  # Train classification model using mlpML method
+  nn <- train(train,
+              train_label,
+              method = "mlpML",
+              # Best layout with the lowest RMSE
+              tuneGrid = expand.grid(layer1 = 45,
+                                     layer2 = 15,
+                                     layer3 = 0
+                                     ),
+              type = "Classification",
+              trControl = cv,
+              verbose = FALSE,
+              )
   
-  library(neuralnet)
+  library(NeuralNetTools)
+  par(mar = c(3.5, 3.5, 3.5, 3.5))
+  plotnet(nn$finalModel)
   
-  # Create a NN classifier ?? takes too much time and it didn't converge
-  nn <- neuralnet(formula,
-                  train,
-                  hidden = 12,
-                  #algorithm = "backprop",
-                  stepmax = 1e6,
-                  act.fct = "logistic",
-                  learningrate = 0.01,
-                  threshold = 0.2,
-                  linear.output = FALSE
-  )
+  # Stop using parallel computing
+  stopCluster(cluster)
   
-  # Plot NN
-  plot(nn)
+  # Measure the accuracy of the model
+  cv_nn_accuracy <- nn$resample['Accuracy']$Accuracy #For the 10-fold cross validation
+  nn_accuracy <- mean(cv_nn_accuracy)
+  print(nn_accuracy) # ~61% not that bad using 20PCs
   
-  end_time <- Sys.time()
-  exec_time <- end_time - start_time
+  # Predict using model
+  pred <- predict(nn, test)
+  predMatrix <- table(pred, test$label)
+  print(predMatrix)
+  print(confusionMatrix(predMatrix)$overall['Accuracy'])
   
   # Save workspace data
-  save.image(file = "my_work_space_Neural_Network_Neuralnet.RData")
+  save.image(file = "my_work_space_Neural_Network_Caret.RData")
   
-  # TODO: it doesn't work yet, asking why to the tutor
-  # return(c(nn, pred, test$label))
+  return(pred)
 }

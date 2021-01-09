@@ -18,7 +18,6 @@ check_packages(c("ggplot2",
                  "cvms",
                  "pROC",
                  "e1071",
-                 #"neuralnet",
                  "doParallel",
                  "NeuralNetTools",
                  "factoextra",
@@ -45,17 +44,13 @@ end_time_nb <- Sys.time()
 time_nb <-  end_time_nb - start_time_nb #Time Naive Bayes
 time_nb
 
-# Neural Network using neuralnet // TODO
-# source("R scritp/NN.R")
-# nn1_pred <- neural_network1(train, test)
-
 # Neural Network using caret
-source("R script/NN2.R")
-start_time_nn2 <- Sys.time()
-nn2_pred <- neural_network2(train, test)
-end_time_nn2 <- Sys.time()
-time_nn2 <-  end_time_nn2 - start_time_nn2 #Time NN
-time_nn2
+source("R script/NN.R")
+start_time_nn <- Sys.time()
+nn_pred <- neural_network(train, test)
+end_time_nn <- Sys.time()
+time_nn <-  end_time_nn - start_time_nn #Time NN
+time_nn
 
 # Model Evaluation
 source("R script/Model Evaluation.R")
@@ -76,16 +71,16 @@ plot_roc_nb <- multi_roc_nb[2] #plot
 plot_roc_nb
 
 # ROC AUC evaluation NN using caret
-mod_eval_nn2 <- model_evaluation(nn2_pred, test$label, "NN using Caret")
-val_nn2 <- mod_eval_nn2[1] # Precision, Recall, F1
-val_nn2
+mod_eval_nn <- model_evaluation(nn_pred, test$label, "NN using Caret")
+val_nn <- mod_eval_nn[1] # Precision, Recall, F1
+val_nn
 
-plot_confmatrix_nn2 <- mod_eval_nn2[2] #plot
-plot_confmatrix_nn2
+plot_confmatrix_nn <- mod_eval_nn[2] #plot
+plot_confmatrix_nn
 
-multi_roc_nn2 <- multi_roc_function(nn2_pred, test, "NN using Caret")
-auc_nn2 <- multi_roc_nn2[1]
-auc_nn2 
+multi_roc_nn <- multi_roc_function(nn_pred, test, "NN using Caret")
+auc_nn <- multi_roc_nn[1]
+auc_nn 
 
-plot_roc_nn2 <- multi_roc_nn2[2] #plot
-plot_roc_nn2
+plot_roc_nn <- multi_roc_nn[2] #plot
+plot_roc_nn

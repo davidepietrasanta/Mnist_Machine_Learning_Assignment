@@ -45,14 +45,17 @@ data_analysis <- function()
         mnist_test$Number <- factor(mnist_test$Number)
         
         # Studying centroids to find similarities between digits
-        par(mfrow = c(2, 5), mar = c(5, 5, 5, 5))
+        par(mfrow = c(2, 5), mar = c(3.5, 3.5, 3.5, 3.5))
         for(i in 0 : 9)
         {
                 sub_v <- subset(mnist_train, Number == i)
                 mean <- colMeans(sub_v[, 2 : 784])
                 digits_matrix <- matrix(mean, nrow = 28, ncol = 28)
                 # Plot every centroid
-                plot(t(digits_matrix), main = paste("Centroids", i))
+                plot(t(digits_matrix), 
+                     main = paste("Centroids", i),
+                     xlab = "",
+                     ylab = "")
         }
         
         # Normalizing dataset
