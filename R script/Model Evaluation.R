@@ -34,39 +34,64 @@ model_evaluation <- function(predictions, labels, model_name)
   return(list(val, plot))
 }
 
-
 # AUC and ROC Plots
 multi_roc_function <- function(pred, test, model_name){
-  library(pROC)
-  pred.roc <- as.numeric(as.character(pred))
-  roc.multi_test <- multiclass.roc(test$label, pred.roc, direction = "<")
-  rs_test <- roc.multi_test[['rocs']]
-  roc.list <- list("(0-1)"=rs_test[[1]],"(0-2)"=rs_test[[2]],
-                   "(0-3)"=rs_test[[3]],"(0-4)"=rs_test[[4]],
-                   "(0-5)"=rs_test[[5]],"(0-6)"=rs_test[[6]],
-                   "(0-7)"=rs_test[[7]],"(0-8)"=rs_test[[8]],
-                   "(0-9)"=rs_test[[9]],"(1-2)"=rs_test[[10]],
-                   "(1-3)"=rs_test[[11]],"(1-4)"=rs_test[[12]],
-                   "(1-5)"=rs_test[[13]],"(1-6)"=rs_test[[14]],
-                   "(1-7)"=rs_test[[15]],"(1-8)"=rs_test[[16]],
-                   "(1-9)"=rs_test[[17]],"(2-3)"=rs_test[[18]],
-                   "(2-4)"=rs_test[[19]],"(2-5)"=rs_test[[20]],
-                   "(2-6)"=rs_test[[21]],"(2-7)"=rs_test[[22]],
-                   "(2-8)"=rs_test[[23]],"(2-9)"=rs_test[[24]],
-                   "(3-4)"=rs_test[[25]],"(3-5)"=rs_test[[26]],
-                   "(3-6)"=rs_test[[27]],"(3-7)"=rs_test[[28]],
-                   "(3-8)"=rs_test[[29]],"(3-9)"=rs_test[[30]],
-                   "(4-5)"=rs_test[[31]],"(4-6)"=rs_test[[32]],
-                   "(4-7)"=rs_test[[33]],"(4-8)"=rs_test[[34]],
-                   "(4-9)"=rs_test[[35]],"(5-6)"=rs_test[[36]],
-                   "(5-7)"=rs_test[[37]],"(5-8)"=rs_test[[38]],
-                   "(5-9)"=rs_test[[39]],"(6-7)"=rs_test[[40]],
-                   "(6-8)"=rs_test[[41]],"(6-9)"=rs_test[[42]],
-                   "(7-8)"=rs_test[[43]],"(7-9)"=rs_test[[44]],
-                   "(8-9)"=rs_test[[45]])
-  plot <- ggroc(roc.list, legacy.axes = TRUE) + geom_abline() + ggtitle(paste("ROC curve", model_name)) + geom_line(size = 1)
-  auc <- as.numeric(roc.multi_test$auc)
-  auc
+  library(multiROC)
+  
+  test$label = factor(test$label)
+  
+  n0_true = as.numeric(test$label == 0)
+  n1_true = as.numeric(test$label == 1)
+  n2_true = as.numeric(test$label == 2)
+  n3_true = as.numeric(test$label == 3)
+  n4_true = as.numeric(test$label == 4)
+  n5_true = as.numeric(test$label == 5)
+  n6_true = as.numeric(test$label == 6)
+  n7_true = as.numeric(test$label == 7)
+  n8_true = as.numeric(test$label == 8)
+  n9_true = as.numeric(test$label == 9)
+  
+  S1_pred_m1 <- as.numeric(as.character(pred))
+  
+  n0_pred_m1 = as.numeric(S1_pred_m1 == 0)
+  n1_pred_m1 = as.numeric(S1_pred_m1 == 1)
+  n2_pred_m1 = as.numeric(S1_pred_m1 == 2)
+  n3_pred_m1 = as.numeric(S1_pred_m1 == 3)
+  n4_pred_m1 = as.numeric(S1_pred_m1 == 4)
+  n5_pred_m1 = as.numeric(S1_pred_m1 == 5)
+  n6_pred_m1 = as.numeric(S1_pred_m1 == 6)
+  n7_pred_m1 = as.numeric(S1_pred_m1 == 7)
+  n8_pred_m1 = as.numeric(S1_pred_m1 == 8)
+  n9_pred_m1 = as.numeric(S1_pred_m1 == 9)
+  
+  test_data <- data.frame(n0_true,n1_true,n2_true,n3_true,n4_true,n5_true,n6_true,n7_true,n8_true,n9_true,
+                          n0_pred_m1,n1_pred_m1,n2_pred_m1,n3_pred_m1,n4_pred_m1,n5_pred_m1,n6_pred_m1,
+                          n7_pred_m1,n8_pred_m1,n9_pred_m1)
+  head(test_data)
+  
+  res <- multi_roc(test_data, force_diag=T)
+  auc <- unlist(res$AUC)
+  
+  
+  #PLOT
+  n_method <- length(unique(res$Methods))
+  n_group <- length(unique(res$Groups))
+  res_df <- data.frame(Specificity= numeric(0), Sensitivity= numeric(0), Group = character(0), AUC = numeric(0), Method = character(0))
+  for (i in 1:n_method) {
+    for (j in 1:n_group) {
+      temp_data_1 <- data.frame(Specificity=res$Specificity[[i]][j],
+                                Sensitivity=res$Sensitivity[[i]][j],
+                                Group=unique(res$Groups)[j],
+                                AUC=res$AUC[[i]][j],
+                                Method = unique(res$Methods)[i])
+      colnames(temp_data_1) <- c("Specificity", "Sensitivity", "Group", "AUC", "Method")
+      res_df <- rbind(res_df, temp_data_1)
+      
+    }
+  }
+  
+  plot<-ggplot2::ggplot(res_df, ggplot2::aes(x = 1-Specificity, y=Sensitivity)) + ggplot2::geom_path(ggplot2::aes(color = Group, linetype=Method)) + ggplot2::geom_segment(ggplot2::aes(x = 0, y = 0, xend = 1, yend = 1), colour='grey', linetype = 'dotdash') + ggplot2::theme_bw() + ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5), legend.justification=c(1, 0), legend.position=c(.95, .05), legend.title=ggplot2::element_blank(), legend.background = ggplot2::element_rect(fill=NULL, size=0.5, linetype="solid", colour ="black"))
+  
   return( list(auc, plot) )
 }
 

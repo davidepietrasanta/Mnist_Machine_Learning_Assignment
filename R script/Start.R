@@ -17,11 +17,13 @@ check_packages(c("ggplot2",
                  "caret",
                  "cvms",
                  "pROC",
-                 "e1071",
+                 #"e1071",
                  "doParallel",
                  "NeuralNetTools",
                  "factoextra",
-                 "plot.matrix"
+                 "plot.matrix",
+                 "fitdistrplus",
+                 "multiROC"
 ))
 
 # Set working directory
@@ -39,7 +41,9 @@ test <-  read.csv("CSV/mnist_test_pca.csv")
 # Naive Bayes
 source("R script/Bayes.R")
 start_time_nb <- Sys.time() 
-nb_pred <- naive_bayes(train, test) 
+temp_np <- naive_bayes(train, test) 
+nb_pred <- temp[1]
+time_pred_test_nb <- temp[2]
 end_time_nb <- Sys.time() 
 time_nb <-  end_time_nb - start_time_nb #Time Naive Bayes
 time_nb
@@ -64,8 +68,9 @@ plot_confmatrix_nb <- mod_eval_nb[2] #plot
 plot_confmatrix_nb
 
 multi_roc_nb <- multi_roc_function(nb_pred, test, "Naive Bayes")
-auc_nb <- multi_roc_nb[1]
-auc_nb 
+auc_nb <- mean(unlist(multi_roc_nb[1], use.names=FALSE)[1:10])
+auc_nb
+
 
 plot_roc_nb <- multi_roc_nb[2] #plot
 plot_roc_nb
