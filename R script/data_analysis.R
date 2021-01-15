@@ -31,32 +31,58 @@ data_analysis <- function()
         # We can conclude that the observed proportions are not significantly different
         # from an uniform distribution, with a p-value of 0.9999935.
         
-        # Correlation matrix from train set
+        # Correlation matrix from train set\
+        library(plotly)
         corr <- round(cor(mnist_train), 2)
+        corr_matrix_plot <- plot_ly(z = corr, type = "heatmap")
+        plot(corr_matrix_plot)
         
         # Looking for distribution of color in every images
         # Stack every value of color
         col <- stack(mnist_train)[, "values", drop = FALSE]
         plot_color_distr <- ggplot(col, aes(values)) + geom_histogram() + ggtitle("Distribution of different color")
-        plot(plot_color_distr)
+        plot_color_distr
         
         # Making target class as a factor 
         mnist_train$Number <- factor(mnist_train$Number)
         mnist_test$Number <- factor(mnist_test$Number)
         
         # Studying centroids to find similarities between digits
+        sub_v <- lapply(0:9, function(i) subset(mnist_train, Number == i))
+        mean_vec <- lapply(1:10, function(i) colMeans(sub_v[[i]][, 2 : 784]))
+        digits_matrix <- lapply(1:10, function(i) matrix(mean_vec[[i]], ncol = 28, nrow = 28))
+        # Plot every centroids
+        plots <- lapply(1:10, function(i)
+                plot_ly(z = t(digits_matrix[[i]][, nrow(digits_matrix[[i]]) : 1]),
+                type = "heatmap",
+                showscale = FALSE
+                ))
+        subplot(plots, nrows = 2)
+        # Compute distance from centroids
+        euclidian_distance <- lapply(1:10, function(i) colMeans(t(sqrt((sub_v[[i]][,2 : 784] - mean_vec[[i]]) ^ 2))))
+
+        # Boxplot of distance for digits
         par(mfrow = c(2, 5), mar = c(3.5, 3.5, 3.5, 3.5))
-        for(i in 0 : 9)
-        {
-                sub_v <- subset(mnist_train, Number == i)
-                mean <- colMeans(sub_v[, 2 : 784])
-                digits_matrix <- matrix(mean, nrow = 28, ncol = 28)
-                # Plot every centroid
-                plot(t(digits_matrix), 
-                     main = paste("Centroids", i),
-                     xlab = "",
-                     ylab = "")
-        }
+        boxplot(lapply(1:10, function(i) euclidian_distance[[i]]), main = "Distance from centroids", xlab = "Digit", ylab = "Distance")
+        
+        # Pick the index of the 5 most distant digits from the centroid
+        euclidian_distance <- lapply(1:10, function(i) unlist(euclidian_distance[[i]]))
+        row_index <- lapply(1:10, function(i) head(euclidian_distance[[i]][order(-euclidian_distance[[i]])], 5))
+        row_index <- lapply(1:10, function(i) unlist(row_index[[i]]))
+        diff_digits <- lapply(1:10, function(i) { 
+                lapply(1:5, function(n){
+                        matrix(t(mnist_train[attr(row_index[[i]], 'names')[n],]), ncol = 28, nrow = 28)
+                })})
+        # Plot the most different digits in the dataset
+        diff_plots <- lapply(1:10, function(i){
+                lapply(1:5, function(n){
+                plot_ly(z = t(diff_digits[[i]][[n]][, 28 : 1]),
+                        type = "heatmap", 
+                        showscale = FALSE,
+                        colors = c("white", "black")
+                        )
+                })})
+        subplot(lapply(1:10, function(i) subplot(diff_plots[[i]], nrows = 1)), nrows = 10)
         
         # Normalizing dataset
         mnist_train_norm <- as.matrix(mnist_train[, -1]) / 255

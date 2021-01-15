@@ -19,9 +19,10 @@ check_packages(c("ggplot2",
                  "pROC",
                  "e1071",
                  "doParallel",
-                 "NeuralNetTools",
                  "factoextra",
-                 "plot.matrix"
+                 "plot.matrix",
+                 "plotly",
+                 "dplyr"
 ))
 
 # Set working directory

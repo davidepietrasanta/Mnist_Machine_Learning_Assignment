@@ -34,7 +34,6 @@ model_evaluation <- function(predictions, labels, model_name)
   return(list(val, plot))
 }
 
-
 # AUC and ROC Plots
 multi_roc_function <- function(pred, test, model_name){
   library(pROC)
