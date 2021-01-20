@@ -35,7 +35,7 @@ data_analysis <- function()
         library(plotly)
         corr <- round(cor(mnist_train), 2)
         corr_matrix_plot <- plot_ly(z = corr, type = "heatmap")
-        plot(corr_matrix_plot)
+        corr_matrix_plot
         
         # Looking for distribution of color in every images
         # Stack every value of color

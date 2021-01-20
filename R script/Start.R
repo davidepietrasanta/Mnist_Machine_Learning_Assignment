@@ -23,7 +23,7 @@ check_packages(c("ggplot2",
                  "plot.matrix",
                  "fitdistrplus",
                  "multiROC",
-                 "plotly",
+                 "plotly"
 ))
 
 # Set working directory
