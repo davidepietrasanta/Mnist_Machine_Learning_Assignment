@@ -6,7 +6,6 @@ naive_bayes <- function(train, test){
   train$label = factor(train$label)
   test$label = factor(test$label)
   
-  #library(e1071)
   library(caret)
   
   # Define training control
