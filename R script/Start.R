@@ -22,7 +22,7 @@ check_packages(c("ggplot2",
                  "factoextra",
                  "plot.matrix",
                  "fitdistrplus",
-                 "multiROC",
+                 "multiROC",#
                  "plotly",
 ))
 
