@@ -25,7 +25,7 @@ neural_network <- function(train, test)
               # Best layout with the lowest RMSE
               tuneGrid = expand.grid(layer1 = 300,
                                      layer2 = 20,
-                                     layer3 = 0                                     ),
+                                     layer3 = 0),
               type = "Classification",
               trControl = cv,
               verbose = FALSE,
