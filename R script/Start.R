@@ -71,7 +71,6 @@ multi_roc_nb <- multi_roc_function(nb_pred, test, "Naive Bayes")
 auc_nb <- mean(unlist(multi_roc_nb[1], use.names=FALSE)[1:10])
 auc_nb
 
-
 plot_roc_nb <- multi_roc_nb[2] #plot
 plot_roc_nb
 
