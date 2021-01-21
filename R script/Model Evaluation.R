@@ -42,10 +42,6 @@ multi_roc_function <- function(predictions, labels, model_name){
   
   library(multiROC)
   
-  predictions<- Naive_Bayes$Prediction.train
-  labels <- train
-  model_name <- "Naive Bayes"
-  
   labels$label = factor(labels$label)
   
   n0_true = as.numeric(labels$label == 0)
