@@ -8,48 +8,47 @@ naive_bayes <- function(train, test){
   
   library(caret)
   
+  ###TRAIN###
+  
   # Define training control
   train_control_nb <- trainControl(method="cv", number=10)
-  # Train the model
-  #options(warn=1) 
+  # Train the model with a 10-fold cv #options(warn=1) 
   model_nb <- train(label~., data=train, trControl=train_control_nb, method="nb")
-  cv_nb_accuracy <- model_nb$resample['Accuracy']$Accuracy #For the 10-fold cross validation
-  model_accuracy_nb <- mean(cv_nb_accuracy)
-  print(model_accuracy_nb)
   
-  # Confusion Matrix for the train set
-  pred_train_nb <- predict(model_nb, train)
-  pred_Matrix.train <- table(pred_train_nb, train$label)
-  confusion_Matrix.train <- confusionMatrix(pred_Matrix.train)
-  confusion_Matrix.train
+  #Accuracy
+  accuracy.cv.nb <- model_nb$resample['Accuracy']$Accuracy 
+  accuracy.cv.nb.avg <- mean(accuracy.cv.nb) #Average accuracy
+  print(paste0("Accuracy for Naive Bayes in 10-fold cv: ",accuracy.cv.nb.avg))
   
-  # Plot Confusion Matrix for the train set
-  data_conf_Matrix <- data.frame(confusion_Matrix.train$table)
-  colnames(data_conf_Matrix)[1] <- "Prediction"
-  colnames(data_conf_Matrix)[2] <- "Target"
+  ###TEST###
   
-  library(cvms)
-  plot_confusion_matrix(data_conf_Matrix,
-                                prediction_col = "Prediction",
-                                target_col = "Target",
-                                counts_col = "Freq",
-                                add_normalized = FALSE
-  ) + ggtitle(paste("Confusion Matrix Naive Bayes"))
-  
-  
-  #Confusion Matrix for test set
+  #Prediction for test set and time
   start_time_nb_test <- Sys.time() 
   pred_nb <- predict(model_nb, test)
   end_time_nb_test <- Sys.time()
   time_nb_test <- end_time_nb_test - start_time_nb_test
-  predMatrix_nb <- table(pred_nb, test$label)
-  print(predMatrix_nb)
-  print(confusionMatrix(predMatrix_nb)$overall['Accuracy'])
+  
+  ##Accuracy for test set
+  confusionMatrix.test.nb <- confusionMatrix(table(pred_nb, test$label))
+  accuracy.test.nb <- confusionMatrix.test.nb$overall['Accuracy']
+  print(paste0("Accuracy for Naive Bayes in test set: ",accuracy.test.nb))
+  
+  start_time_nb_train <- Sys.time()
+  predict.nb.train <- predict(model_nb)
+  end_time_nb_train <- Sys.time()
+  time_nb_train <- end_time_nb_train - start_time_nb_train
   
   
   #Save
   save.image(file = "my_work_space_Naive_Bayes.RData")
-  #load("my_work_space_Naive_Bayes.RData") # To restore the data in any time
+  #load("my_work_space_Naive_Bayes.RData") # To restore the data at any time
   
-  return(list(pred_nb, time_nb_test))
+  return_list <- list(model_nb,
+                      predict.nb.train, accuracy.cv.nb.avg, model_nb[["times"]][["everything"]][["user.self"]],
+                      pred_nb, accuracy.test.nb, as.numeric(time_nb_test), as.numeric(time_nb_train))
+  names(return_list) <- c("model", 
+                          "Prediction.train", "Accuracy.train", "Time.train", 
+                          "Prediction.test", "Accuracy.test", "Time.test", "Time.train.Prediction")
+  
+  return(return_list)
 }

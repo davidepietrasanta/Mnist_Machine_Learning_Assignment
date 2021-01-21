@@ -40,51 +40,43 @@ test <-  read.csv("CSV/mnist_test_pca.csv")
 
 # Naive Bayes
 source("R script/Bayes.R")
-start_time_nb <- Sys.time() 
-temp_np <- naive_bayes(train, test) 
-nb_pred <- temp[1]
-time_pred_test_nb <- temp[2]
-end_time_nb <- Sys.time() 
-time_nb <-  end_time_nb - start_time_nb #Time Naive Bayes
-time_nb
+Naive_Bayes <- naive_bayes(train, test) 
+Naive_Bayes$Time.train
+Naive_Bayes$Time.test
+
 
 # Neural Network using caret
 source("R script/NN.R")
-start_time_nn <- Sys.time()
-nn_pred <- neural_network(train, test)
-end_time_nn <- Sys.time()
-time_nn <-  end_time_nn - start_time_nn #Time NN
-time_nn
+Neural_Network <- neural_network(train, test)
+Neural_Network$Time.train
+Neural_Network$Time.test
+
 
 # Model Evaluation
 source("R script/Model Evaluation.R")
-test$label = factor(test$label)
+train$label = factor(train$label)
 
-mod_eval_nb <- model_evaluation(nb_pred, test$label, "Naive Bayes")
-val_nb <- mod_eval_nb[1] # Precision, Recall, F1
-val_nb
+mod_eval_nb <- model_evaluation(Naive_Bayes$Prediction.train, train$label, "Naive Bayes")
+mod_eval_nb$Precision # Precision
+mod_eval_nb$Recall #Recall
+mod_eval_nb$F1 #F1
+confusionMatrix.plot.nb <- mod_eval_nb$confusionMatrix.plot
+confusionMatrix.plot.nb #Plot Confusion Matrix
 
-plot_confmatrix_nb <- mod_eval_nb[2] #plot
-plot_confmatrix_nb
+multiROC.nb <- multi_roc_function(Naive_Bayes$Prediction.train, train$label, "Naive Bayes")
+multiROC.nb$AUC
+multiROC.nb$avg.AUC
+multiROC.nb.plot <- multiROC.nb$roc.plot
 
-multi_roc_nb <- multi_roc_function(nb_pred, test, "Naive Bayes")
-auc_nb <- mean(unlist(multi_roc_nb[1], use.names=FALSE)[1:10])
-auc_nb
+mod_eval_nn <- model_evaluation(Neural_Network$Prediction.train, train$label, "Neural Network")
+mod_eval_nn$Precision # Precision
+mod_eval_nn$Recall #Recall
+mod_eval_nn$F1 #F1
+confusionMatrix.plot.nn <- mod_eval_nn$confusionMatrix.plot
+confusionMatrix.plot.nn #Plot Confusion Matrix
 
-plot_roc_nb <- multi_roc_nb[2] #plot
-plot_roc_nb
+multiROC.nn <- multi_roc_function(Neural_Network$Prediction.train, train$label, "Neural Network")
+multiROC.nn$AUC
+multiROC.nn$avg.AUC
+multiROC.nn.plot <- multiROC.nn$roc.plot #Plot Confusion Matrix
 
-# ROC AUC evaluation NN using caret
-mod_eval_nn <- model_evaluation(nn_pred, test$label, "NN using Caret")
-val_nn <- mod_eval_nn[1] # Precision, Recall, F1
-val_nn
-
-plot_confmatrix_nn <- mod_eval_nn[2] #plot
-plot_confmatrix_nn
-
-multi_roc_nn <- multi_roc_function(nn_pred, test, "NN using Caret")
-auc_nn <- multi_roc_nn[1]
-auc_nn 
-
-plot_roc_nn <- multi_roc_nn[2] #plot
-plot_roc_nn
