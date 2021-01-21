@@ -56,6 +56,7 @@ Neural_Network$Time.test
 source("R script/Model Evaluation.R")
 train$label = factor(train$label)
 
+##NAIVE BAYES##
 mod_eval_nb <- model_evaluation(Naive_Bayes$Prediction.train, train$label, "Naive Bayes")
 mod_eval_nb$Precision # Precision
 mod_eval_nb$Recall #Recall
@@ -63,11 +64,14 @@ mod_eval_nb$F1 #F1
 confusionMatrix.plot.nb <- mod_eval_nb$confusionMatrix.plot
 confusionMatrix.plot.nb #Plot Confusion Matrix
 
-multiROC.nb <- multi_roc_function(Naive_Bayes$Prediction.train, train$label, "Naive Bayes")
-multiROC.nb$AUC
-multiROC.nb$avg.AUC
+multiROC.nb <- multi_roc_function(Naive_Bayes$Prediction.train, train, "Naive Bayes")
+multiROC.nb$AUC #AUC
+multiROC.nb$avg.AUC #Average AUC
 multiROC.nb.plot <- multiROC.nb$roc.plot
+multiROC.nb.plot #Plot of ROC
 
+
+##NEURAL NETWORK##
 mod_eval_nn <- model_evaluation(Neural_Network$Prediction.train, train$label, "Neural Network")
 mod_eval_nn$Precision # Precision
 mod_eval_nn$Recall #Recall
@@ -75,8 +79,9 @@ mod_eval_nn$F1 #F1
 confusionMatrix.plot.nn <- mod_eval_nn$confusionMatrix.plot
 confusionMatrix.plot.nn #Plot Confusion Matrix
 
-multiROC.nn <- multi_roc_function(Neural_Network$Prediction.train, train$label, "Neural Network")
-multiROC.nn$AUC
-multiROC.nn$avg.AUC
-multiROC.nn.plot <- multiROC.nn$roc.plot #Plot Confusion Matrix
+multiROC.nn <- multi_roc_function(Neural_Network$Prediction.train, train, "Neural Network")
+multiROC.nn$AUC #AUC
+multiROC.nn$avg.AUC #Average AUC
+multiROC.nn.plot <- multiROC.nn$roc.plot 
+multiROC.nn.plot #Plot of ROC
 
