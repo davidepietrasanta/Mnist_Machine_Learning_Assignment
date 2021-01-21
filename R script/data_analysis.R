@@ -31,10 +31,10 @@ data_analysis <- function()
         # We can conclude that the observed proportions are not significantly different
         # from an uniform distribution, with a p-value of 0.9999935.
         
-        # Correlation matrix from train set\
+        # Correlation matrix from train set
         library(plotly)
         corr <- round(cor(mnist_train), 2)
-        corr_matrix_plot <- plot_ly(z = corr, type = "heatmap")
+        corr_matrix_plot <- plot_ly(z = t(corr))
         corr_matrix_plot
         
         # Looking for distribution of color in every images
@@ -62,8 +62,7 @@ data_analysis <- function()
         euclidian_distance <- lapply(1:10, function(i) colMeans(t(sqrt((sub_v[[i]][,2 : 784] - mean_vec[[i]]) ^ 2))))
 
         # Boxplot of distance for digits
-        par(mfrow = c(2, 5), mar = c(3.5, 3.5, 3.5, 3.5))
-        boxplot(lapply(1:10, function(i) euclidian_distance[[i]]), main = "Distance from centroids", xlab = "Digit", ylab = "Distance")
+        boxplot(lapply(1:10, function(i) euclidian_distance[[i]]), main = "Distance from centroids", xlab = "Digit", ylab = "Distance", names = c(0:9))
         
         # Pick the index of the 5 most distant digits from the centroid
         euclidian_distance <- lapply(1:10, function(i) unlist(euclidian_distance[[i]]))
