@@ -10,10 +10,18 @@ naive_bayes <- function(train, test){
   
   ###TRAIN###
   
+  library(doParallel)
+  cores <- detectCores()
+  registerDoParallel(cores = cores)
+  cluster <- makeCluster(cores)
+  
   # Define training control
   train_control_nb <- trainControl(method="cv", number=10)
   # Train the model with a 10-fold cv #options(warn=1) 
   model_nb <- train(label~., data=train, trControl=train_control_nb, method="nb")
+  
+  # Stop using parallel computing
+  stopCluster(cluster)
   
   #Accuracy
   accuracy.cv.nb <- model_nb$resample['Accuracy']$Accuracy 
