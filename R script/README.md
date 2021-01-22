@@ -11,3 +11,4 @@ After the first run you can find all the data in the `.RData` files. To load the
 ```
 load(file = "save.image(file = "my_work_space_Start.RData")
 ```
+You can find all the plot in here in `\Images`.
