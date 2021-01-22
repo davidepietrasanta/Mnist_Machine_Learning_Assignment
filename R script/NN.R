@@ -70,8 +70,8 @@ neural_network <- function(train, test)
   save.image(file = "my_work_space_Neural.RData")
   
   return_list <- list(model_nn,
-                      predict.nn.train, accuracy.cv.nn.avg, model_nn[["times"]][["everything"]][["user.self"]]*60,
-                      pred_nn, accuracy.test.nn, as.numeric(time_nn_test), as.numeric(time_nn_train)*60)
+                      predict.nn.train, accuracy.cv.nn.avg, model_nn[["times"]][["everything"]][["user.self"]],
+                      pred_nn, accuracy.test.nn, as.numeric(time_nn_test, units="secs"), as.numeric(time_nn_train, units="secs"))
   names(return_list) <- c("model", 
                           "Prediction.train", "Accuracy.train", "Time.train", 
                           "Prediction.test", "Accuracy.test", "Time.test", "Time.train.Prediction")

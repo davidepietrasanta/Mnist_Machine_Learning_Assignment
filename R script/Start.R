@@ -29,6 +29,7 @@ check_packages(c("ggplot2",
 # Set working directory
 current_path <- dirname(dirname(rstudioapi::getSourceEditorContext()$path))
 setwd(current_path)
+set.seed(2)
 
 # Data Analysis and PCA
 source("R script/data_analysis.R")
@@ -43,6 +44,7 @@ source("R script/Bayes.R")
 Naive_Bayes <- naive_bayes(train, test) 
 Naive_Bayes$Time.train
 Naive_Bayes$Time.test
+Naive_Bayes$Time.train.Prediction
 
 
 # Neural Network using caret
@@ -50,6 +52,7 @@ source("R script/NN.R")
 Neural_Network <- neural_network(train, test)
 Neural_Network$Time.train
 Neural_Network$Time.test
+Neural_Network$Time.train.Prediction
 
 
 # Model Evaluation
@@ -85,3 +88,5 @@ multiROC.nn$avg.AUC #Average AUC
 multiROC.nn.plot <- multiROC.nn$roc.plot 
 multiROC.nn.plot #Plot of ROC
 
+save.image(file = "my_work_space_Start.RData")
+#load(file = "save.image(file = "my_work_space_Start.RData")
