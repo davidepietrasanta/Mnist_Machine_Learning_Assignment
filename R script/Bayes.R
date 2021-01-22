@@ -45,7 +45,7 @@ naive_bayes <- function(train, test){
   
   return_list <- list(model_nb,
                       predict.nb.train, accuracy.cv.nb.avg, model_nb[["times"]][["everything"]][["user.self"]],
-                      pred_nb, accuracy.test.nb, as.numeric(time_nb_test), as.numeric(time_nb_train))
+                      pred_nb, accuracy.test.nb, as.numeric(time_nb_test, units="secs"), as.numeric(time_nb_train, units="secs"))
   names(return_list) <- c("model", 
                           "Prediction.train", "Accuracy.train", "Time.train", 
                           "Prediction.test", "Accuracy.test", "Time.test", "Time.train.Prediction")

@@ -34,11 +34,6 @@ neural_network <- function(train, test)
                     verbose = FALSE
   )
   
-  # Plot NN topology
-  library(NeuralNetTools)
-  par(mar = c(3.5, 3.5, 3.5, 3.5))
-  plotnet(model_nn$finalModel)
-  
   # Stop using parallel computing
   stopCluster(cluster)
   
