@@ -89,8 +89,10 @@ multiROC.nn.plot #Plot of ROC
 ##T-TEST##
 t_test <- t.test(x = c(Naive_Bayes$Accuracy.train, Naive_Bayes$Accuracy.test, mod_eval_nb$Precision, mod_eval_nb$Recall, mod_eval_nb$F1), 
                  y = c(Neural_Network$Accuracy.train, Neural_Network$Accuracy.test, mod_eval_nn$Precision, mod_eval_nn$Recall, mod_eval_nn$F1), 
+                 alternative = "less",
                  paired = TRUE)
-t_test
+t_test$p.value
+
 
 save.image(file = "my_work_space_Start.RData")
 #load(file = "save.image(file = "my_work_space_Start.RData")
