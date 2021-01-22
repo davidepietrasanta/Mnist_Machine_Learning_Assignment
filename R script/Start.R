@@ -43,6 +43,7 @@ source("R script/Bayes.R")
 Naive_Bayes <- naive_bayes(train, test) 
 Naive_Bayes$Time.train
 Naive_Bayes$Time.test
+Naive_Bayes$Time.train.Prediction
 
 
 # Neural Network using caret
@@ -50,6 +51,7 @@ source("R script/NN.R")
 Neural_Network <- neural_network(train, test)
 Neural_Network$Time.train
 Neural_Network$Time.test
+Neural_Network$Time.train.Prediction
 
 
 # Model Evaluation
@@ -89,3 +91,7 @@ t_test <- t.test(x = c(Naive_Bayes$Accuracy.train, Naive_Bayes$Accuracy.test, mo
                  y = c(Neural_Network$Accuracy.train, Neural_Network$Accuracy.test, mod_eval_nn$Precision, mod_eval_nn$Recall, mod_eval_nn$F1), 
                  paired = TRUE)
 t_test
+
+save.image(file = "my_work_space_Start.RData")
+#load(file = "save.image(file = "my_work_space_Start.RData")
+
