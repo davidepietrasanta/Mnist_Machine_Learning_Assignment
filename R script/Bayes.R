@@ -15,6 +15,9 @@ naive_bayes <- function(train, test){
   registerDoParallel(cores = cores)
   cluster <- makeCluster(cores)
   
+  # Set seed for repeatability
+  set.seed(123)
+  
   # Define training control
   train_control_nb <- trainControl(method="cv", number=10)
   # Train the model with a 10-fold cv #options(warn=1) 
