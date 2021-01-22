@@ -24,16 +24,15 @@ neural_network <- function(train, test)
   
   # Train classification model using mlpML method
   model_nn <- train(x = train[, 2 : ncol(train)],
-              y= train_label,
-              method = "mlpML",
-              # Best layout with the lowest RMSE
-              tuneGrid = expand.grid(layer1 = 300,
-                                     layer2 = 20,
-                                     layer3 = 0),
-              type = "Classification",
-              trControl = train_control_nn,
-              verbose = FALSE
-              )
+                    y= train_label,
+                    method = "mlpML",
+                    tuneGrid = expand.grid(layer1 = 300,
+                                           layer2 = 20,
+                                           layer3 = 0),
+                    type = "Classification",
+                    trControl = train_control_nn,
+                    verbose = FALSE
+  )
   
   # Plot NN topology
   library(NeuralNetTools)

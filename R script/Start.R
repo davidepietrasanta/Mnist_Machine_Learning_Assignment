@@ -70,7 +70,6 @@ multiROC.nb$avg.AUC #Average AUC
 multiROC.nb.plot <- multiROC.nb$roc.plot
 multiROC.nb.plot #Plot of ROC
 
-
 ##NEURAL NETWORK##
 mod_eval_nn <- model_evaluation(Neural_Network$Prediction.train, train$label, "Neural Network")
 mod_eval_nn$Precision # Precision
@@ -85,3 +84,8 @@ multiROC.nn$avg.AUC #Average AUC
 multiROC.nn.plot <- multiROC.nn$roc.plot 
 multiROC.nn.plot #Plot of ROC
 
+##T-TEST##
+t_test <- t.test(x = c(Naive_Bayes$Accuracy.train, Naive_Bayes$Accuracy.test, mod_eval_nb$Precision, mod_eval_nb$Recall, mod_eval_nb$F1), 
+                 y = c(Neural_Network$Accuracy.train, Neural_Network$Accuracy.test, mod_eval_nn$Precision, mod_eval_nn$Recall, mod_eval_nn$F1), 
+                 paired = TRUE)
+t_test
