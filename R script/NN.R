@@ -67,11 +67,11 @@ neural_network <- function(train, test)
   time_nn_train <- end_time_nn_train - start_time_nn_train
   
   # Save workspace data
-  save.image(file = "my_work_space_Neural_Network_Caret.RData")
+  save.image(file = "my_work_space_Neural.RData")
   
   return_list <- list(model_nn,
-                      predict.nn.train, accuracy.cv.nn.avg, model_nn[["times"]][["everything"]][["user.self"]],
-                      pred_nn, accuracy.test.nn, as.numeric(time_nn_test), as.numeric(time_nn_train))
+                      predict.nn.train, accuracy.cv.nn.avg, model_nn[["times"]][["everything"]][["user.self"]]*60,
+                      pred_nn, accuracy.test.nn, as.numeric(time_nn_test), as.numeric(time_nn_train)*60)
   names(return_list) <- c("model", 
                           "Prediction.train", "Accuracy.train", "Time.train", 
                           "Prediction.test", "Accuracy.test", "Time.test", "Time.train.Prediction")
