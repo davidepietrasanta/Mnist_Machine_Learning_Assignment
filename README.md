@@ -1,6 +1,6 @@
 # Mnist_Machine_Learning_Assignment
 
-This project is the implementation of the following assigment. [Click here](https://github.com/davidepietrasanta/Mnist_Machine_Learning_Assignment/blob/main/Intro%20Lab%20Machine%20Learning.pdf) to know more and [Her](https://github.com/davidepietrasanta/Mnist_Machine_Learning_Assignment/blob/main/Report_Machine_Learning_Course.pdf) to read the report.
+This project is the implementation of the following assigment. [Click here](https://github.com/davidepietrasanta/Mnist_Machine_Learning_Assignment/blob/main/Intro%20Lab%20Machine%20Learning.pdf) to know more and [Here](https://github.com/davidepietrasanta/Mnist_Machine_Learning_Assignment/blob/main/Report_Machine_Learning_Course.pdf) to read the report.
 
 We want to implement two of the Machine Learning models saw in class.
 ## Naive Bayes
